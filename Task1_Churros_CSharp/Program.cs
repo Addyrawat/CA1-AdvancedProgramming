@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 
 public class Order
 {
-    public int order_no;
+    public int order_no;ComDefaultInterfaceAttribute
     public string order_details;
     public int quantity;
     public double bill;
