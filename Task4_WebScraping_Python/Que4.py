@@ -1,5 +1,4 @@
-# Topic: Web Scraping
-# Example: Extract book details and store in CSV
+
 
 import requests
 from bs4 import BeautifulSoup
@@ -16,7 +15,7 @@ print("\nPage Title:", soup.title)
 
 input("\nPress Enter to continue...")
 
-# Find all books
+
 books = soup.find_all('article', class_='product_pod')
 
 print("\nTotal books found:", len(books))
@@ -36,7 +35,7 @@ for book in books:
 
     rows.append((title, rating, price))
 
-# Save to CSV
+
 fname = "books.csv"
 
 try:

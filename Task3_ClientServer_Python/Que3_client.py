@@ -1,5 +1,4 @@
-# Topic: Client-Server Programming
-# Example: TCP Client
+
 
 import socket
 

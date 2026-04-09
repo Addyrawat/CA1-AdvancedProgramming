@@ -20,10 +20,10 @@ class DictDemo
 {
     public static void Main(string[] args)
     {
-        // Creating dictionary
+        
         Dictionary<int, Element> elements = new Dictionary<int, Element>();
 
-        // Adding first 30 elements
+        
         elements.Add(1, new Element(1, "Hydrogen", "Nonmetal"));
         elements.Add(2, new Element(2, "Helium", "Noble Gas"));
         elements.Add(3, new Element(3, "Lithium", "Alkali Metal"));
