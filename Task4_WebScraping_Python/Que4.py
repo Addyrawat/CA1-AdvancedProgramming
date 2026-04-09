@@ -1,43 +1,60 @@
+# Topic: Web Scraping
+# Example: Extract book details and store in CSV
+
 import requests
 from bs4 import BeautifulSoup
 import csv
 
-# URL to scrape
 url = "https://books.toscrape.com/catalogue/category/books/travel_2/index.html"
 
-# request webpage
 response = requests.get(url)
+print(response)
 
-soup = BeautifulSoup(response.text, "html.parser")
+soup = BeautifulSoup(response.content, 'html.parser')
 
-books = soup.find_all("article", class_="product_pod")
+print("\nPage Title:", soup.title)
 
-book_data = []
+input("\nPress Enter to continue...")
+
+# Find all books
+books = soup.find_all('article', class_='product_pod')
+
+print("\nTotal books found:", len(books))
+
+input("\nPress Enter to extract data...")
+
+rows = []
 
 for book in books:
-    title = book.h3.a["title"]
+    title = book.h3.a['title']
+    price = book.find('p', class_='price_color').text
+    rating = book.p['class'][1]
 
-    price = book.find("p", class_="price_color").text
+    print("\nTitle:", title)
+    print("Price:", price)
+    print("Rating:", rating)
 
-    rating = book.p["class"][1]
+    rows.append((title, rating, price))
 
-    book_data.append([title, rating, price])
+# Save to CSV
+fname = "books.csv"
 
-# save data to CSV
-with open("books.csv", "w", newline="", encoding="utf-8") as file:
-    writer = csv.writer(file)
+try:
+    with open(fname, "w+", newline='', encoding='utf-8') as f:
+        writer = csv.writer(f)
 
-    writer.writerow(["Title", "Rating", "Price"])
+        writer.writerow(["Title", "Rating", "Price"])
+        writer.writerows(rows)
 
-    writer.writerows(book_data)
+        print("\nCSV file created successfully")
 
-print("Data saved to books.csv")
+        input("\nPress Enter to display data...")
 
-# read CSV file and display results
-print("\nBooks from CSV:\n")
+        f.seek(0)
+        reader = csv.reader(f)
 
-with open("books.csv", "r", encoding="utf-8") as file:
-    reader = csv.reader(file)
+        for row in reader:
+            print(row)
 
-    for row in reader:
-        print(row)
+except Exception as e:
+    print(e)

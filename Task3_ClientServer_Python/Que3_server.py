@@ -1,58 +1,62 @@
+# Topic: Client-Server Programming
+# Example: TCP Server with Database
+
 import socket
 import sqlite3
-import random
 
-# create database connection
+# Create database
 conn = sqlite3.connect("customers.db")
-cursor = conn.cursor()
+cur = conn.cursor()
 
-# create table if not exists
-cursor.execute("""
+cur.execute("""
 CREATE TABLE IF NOT EXISTS customers(
-    reg_no TEXT,
-    name TEXT,
-    address TEXT,
-    pps TEXT,
-    license TEXT
+reg_no TEXT,
+name TEXT,
+address TEXT,
+pps TEXT,
+license TEXT
 )
 """)
 
 conn.commit()
 
-# create socket server
+# Create socket
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 server.bind(("localhost", 5000))
-
 server.listen(1)
 
-print("Server started... Waiting for client connection")
+print("Server is running...")
+print("Waiting for client...")
 
 conn_socket, addr = server.accept()
 
 print("Client connected:", addr)
 
+# Receive data
 data = conn_socket.recv(1024).decode()
 
-details = data.split(",")
+values = data.split(",")
 
-name = details[0]
-address = details[1]
-pps = details[2]
-license_no = details[3]
+name = values[0]
+address = values[1]
+pps = values[2]
+license_no = values[3]
 
-# generate registration number
-reg_no = "REG" + str(random.randint(1000,9999))
+# Generate registration number
+import random
+reg_no = "REG" + str(random.randint(1000, 9999))
 
-cursor.execute("INSERT INTO customers VALUES (?,?,?,?,?)",
-               (reg_no,name,address,pps,license_no))
+# Insert into database
+cur.execute("INSERT INTO customers VALUES (?,?,?,?,?)",
+            (reg_no, name, address, pps, license_no))
 
 conn.commit()
 
-print("Customer stored in database")
+print("Data stored successfully")
 
+# Send back registration number
 conn_socket.send(reg_no.encode())
 
 conn_socket.close()
-
 conn.close()

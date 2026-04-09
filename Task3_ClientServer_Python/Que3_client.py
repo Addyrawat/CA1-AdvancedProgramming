@@ -1,8 +1,11 @@
+# Topic: Client-Server Programming
+# Example: TCP Client
+
 import socket
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-client.connect(("localhost",5000))
+client.connect(("localhost", 5000))
 
 print("Enter Customer Details")
 
@@ -17,7 +20,7 @@ client.send(data.encode())
 
 reg_no = client.recv(1024).decode()
 
-print("Registration successful")
-print("Your Registration Number:", reg_no)
+print("\nRegistration Successful")
+print("Registration Number:", reg_no)
 
 client.close()
